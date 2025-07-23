@@ -2,15 +2,16 @@ name: Tweet Fetcher
 
 on:
   schedule:
-    # local times in SGT (UTC+8) -> convert to UTC
-    # 10 PM–6 AM SGT  → 14:00–22:00 UTC, every hour
     - cron: '0 14-22 * * *'
-    # extra at 2 PM SGT → 06:00 UTC
     - cron: '0 6 * * *'
   workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   get-tweet:
+    name: 🐦 Main Job
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout
@@ -29,9 +30,9 @@ jobs:
       - name: 🍪 Decode cookies
         run: echo "${{ secrets.TWITTER_COOKIES_B64 }}" | base64 -d > badeline.json
 
-      - name: 🕒 Silly wait time
+      - name: 🕒 Wait up to 5s
         run: |
-          sleep $((RANDOM % 6 + 9))
+          sleep $((RANDOM % 2 + 3))
 
       - name: 📩✏️ Fetch & write
         run: python main.py
@@ -41,5 +42,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "actions@github.com"
           git add badeline.txt
-          git commit -m "chore: update latest tweet" || echo "no changes"
+          git commit -m "chore: update latest tweet :3" || echo "no changes"
           git push
