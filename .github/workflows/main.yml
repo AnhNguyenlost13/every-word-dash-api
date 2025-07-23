@@ -30,9 +30,9 @@ jobs:
       - name: 🍪 Decode cookies
         run: echo "${{ secrets.TWITTER_COOKIES_B64 }}" | base64 -d > badeline.json
 
-      - name: 🕒 Wait up to 5s
+      - name: 🕒 Wait up to 10s
         run: |
-          sleep $((RANDOM % 2 + 3))
+          sleep $((RANDOM % 5 + 5))
 
       - name: 📩✏️ Fetch & write
         run: python main.py
