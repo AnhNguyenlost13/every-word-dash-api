@@ -1,0 +1,45 @@
+name: Tweet Fetcher
+
+on:
+  schedule:
+    # local times in SGT (UTC+8) -> convert to UTC
+    # 10 PM–6 AM SGT  → 14:00–22:00 UTC, every hour
+    - cron: '0 14-22 * * *'
+    # extra at 2 PM SGT → 06:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  get-tweet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🐍
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 🧰
+        run: pip install twikit
+
+      - name: 🍪
+        run: echo "${{ secrets.TWITTER_COOKIES_B64 }}" | base64 -d > badeline.json
+
+      - name: 🕒
+        run: |
+          sleep $((RANDOM % 6 + 9))
+
+      - name: 📩✏️
+        run: python fetch_and_commit_tweet.py
+
+      - name: 📤
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "actions@github.com"
+          git add badeline.txt
+          git commit -m "chore: update latest tweet" || echo "no changes"
+          git push
