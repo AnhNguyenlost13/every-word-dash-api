@@ -22,7 +22,7 @@ async def get_latest(username: str):
             more = await tweets.next()
             latest = more[0]
 
-    with open("latest_tweet.txt", "w", encoding="utf-8") as f:
+    with open("badeline.txt", "w", encoding="utf-8") as f:
         f.write(re.sub(r"\shttps://t\.co/\w+$", "", latest.text.strip()))
 
 asyncio.run(get_latest("everyworddash"))
