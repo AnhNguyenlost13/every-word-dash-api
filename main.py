@@ -8,7 +8,7 @@ async def get_latest(username: str):
     
     realclient = client.Client()
     realclient.load_cookies("badeline.json")
-    await realclient.activate()
+    # await realclient.activate()
     
     await gclient.activate()
     user = await gclient.get_user_by_screen_name(username)
