@@ -13,30 +13,30 @@ jobs:
   get-tweet:
     runs-on: ubuntu-latest
     steps:
-      - name: 📥
+      - name: 📥 Checkout
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🐍
+      - name: 🐍 Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: 🧰
+      - name: 🧰 Install dependency
         run: pip install twikit
 
-      - name: 🍪
+      - name: 🍪 Decode cookies
         run: echo "${{ secrets.TWITTER_COOKIES_B64 }}" | base64 -d > badeline.json
 
-      - name: 🕒
+      - name: 🕒 Silly wait time
         run: |
           sleep $((RANDOM % 6 + 9))
 
-      - name: 📩✏️
-        run: python fetch_and_commit_tweet.py
+      - name: 📩✏️ Fetch & write
+        run: python main.py
 
-      - name: 📤
+      - name: 📤 Commit latest
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "actions@github.com"
