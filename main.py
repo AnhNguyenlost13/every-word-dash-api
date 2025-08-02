@@ -1,28 +1,26 @@
-import asyncio
-import re
-from twikit.guest import GuestClient
-from twikit.client import client
+#!/usr/bin/env python3
 
-async def get_latest(username: str):
-    gclient = GuestClient()
-    
-    realclient = client.Client()
-    realclient.load_cookies("badeline.json")
-    # await realclient.activate()
-    
-    await gclient.activate()
-    user = await gclient.get_user_by_screen_name(username)
-    
-    tweets = await realclient.get_user_tweets(user.id, 'Tweets', count=1)
-    latest = tweets[0]
-    if getattr(latest, "pinned", False):
-        if len(tweets) > 1:
-            latest = tweets[1]
-        else:
-            more = await tweets.next()
-            latest = more[0]
+import requests
 
+def fetch_and_extract(url: str, prefix: str = "-> ") -> str:
+    resp = requests.get(url)
+    resp.raise_for_status()
+    
+    first_line = resp.text.splitlines()[0]
+    
+    if prefix in first_line:
+        return first_line.split(prefix, 1)[1]
+    else:
+        return ""
+    
+def main():
+    url = "https://gdcolon.com/ewd_history.txt"
+    result = fetch_and_extract(url)
+    
     with open("badeline.txt", "w", encoding="utf-8") as f:
-        f.write(re.sub(r"\shttps://t\.co/\w+$", "", latest.text.strip()))
+        f.write(result)
+    
+    print(f"todays word: {result}")
 
-asyncio.run(get_latest("everyworddash"))
+if __name__ == "__main__":
+    main()
