@@ -2,7 +2,7 @@ name: Tweet Fetcher
 
 on:
   schedule:
-    - cron: '0 * * * *' # istg this thing doesn't even correctly do it every hour but idc it works anyway
+    - cron: '30 * * * *' # istg this thing doesn't even correctly do it every hour but idc it works anyway
   workflow_dispatch:
   # push:
   #   branches:
