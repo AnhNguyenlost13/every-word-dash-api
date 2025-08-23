@@ -1,4 +1,4 @@
-name: Tweet Fetcher
+name: Word Fetcher
 
 on:
   schedule:
