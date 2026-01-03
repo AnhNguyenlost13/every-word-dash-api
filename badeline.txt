@@ -1,1 +1,1 @@
-Bootstraps Dash
+Slipt Dash
